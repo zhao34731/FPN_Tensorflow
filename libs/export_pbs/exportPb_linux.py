@@ -12,21 +12,19 @@ from data.io.image_preprocess import short_side_resize_for_inference_data
 from libs.configs import cfgs
 from libs.networks import build_whole_network
 
-CKPT_PATH = '/media/E/Develop/learn/FPN_Tensorflow/output/trained_weights/FPN_Res101_20181201/voc_157000model.ckpt'
+CKPT_PATH = '/home/yjr/PycharmProjects/Faster-RCNN_Tensorflow/output/trained_weights/FasterRCNN_20180517/voc_200000model.ckpt'
 OUT_DIR = '../../output/Pbs'
-PB_NAME = 'FPN_Res101_SAR_revise.pb'
+PB_NAME = 'FasterRCNN_Res101_Pascal.pb'
 
 
 def build_detection_graph():
     # 1. preprocess img
-    # img_plac = tf.placeholder(dtype=tf.uint8, shape=[None, None, 3],
-    #                           name='input_img')  # is RGB. not GBR
-
-    img_plac = tf.placeholder(dtype=tf.int32,shape=(None ,None, 3),name='image_tensor')
+    img_plac = tf.placeholder(dtype=tf.uint8, shape=[None, None, 3],
+                              name='input_img')  # is RGB. not GBR
     raw_shape = tf.shape(img_plac)
     raw_h, raw_w = tf.to_float(raw_shape[0]), tf.to_float(raw_shape[1])
 
-    img_batch = tf.cast(img_plac, tf.uint8)
+    img_batch = tf.cast(img_plac, tf.float32)
     img_batch = short_side_resize_for_inference_data(img_tensor=img_batch,
                                                      target_shortside_len=cfgs.IMG_SHORT_SIDE_LEN,
                                                      length_limitation=cfgs.IMG_MAX_LENGTH)
@@ -52,16 +50,12 @@ def build_detection_graph():
     ymin = ymin * raw_h / resized_h
     ymax = ymax * raw_h / resized_h
 
-    boxes = tf.transpose(tf.stack([xmin, ymin, xmax, ymax]),name='detection_boxes')
-    scores = tf.reshape(detection_scores,[-1,1],name='detection_scores')
-    classes  = tf.reshape(detection_category, [-1, 1], name='detections_classes')
-    numbers = tf.size(scores,name='num_detections')
+    boxes = tf.transpose(tf.stack([xmin, ymin, xmax, ymax]))
+    dets = tf.concat([tf.reshape(detection_category, [-1, 1]),
+                     tf.reshape(detection_scores, [-1, 1]),
+                     boxes], axis=1, name='DetResults')
 
-    # dets = tf.concat([tf.reshape(detection_category, [-1, 1]),
-    #                  tf.reshape(detection_scores, [-1, 1]),
-    #                  boxes], axis=1, name='DetResults')
-
-    return boxes,scores,classes,numbers
+    return dets
 
 
 def export_frozenPB():
@@ -81,7 +75,7 @@ def export_frozenPB():
                                   input_saver='',
                                   input_binary=False,
                                   input_checkpoint=CKPT_PATH,
-                                  output_node_names="detection_boxes,detection_scores,detections_classes,num_detections",
+                                  output_node_names="DetResults",
                                   restore_op_name="save/restore_all",
                                   filename_tensor_name='save/Const:0',
                                   output_graph=os.path.join(OUT_DIR, PB_NAME.replace('.pb', '_Frozen.pb')),

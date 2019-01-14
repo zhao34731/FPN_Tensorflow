@@ -52,12 +52,12 @@ def detect(det_net, inference_save_path, real_test_imgname_list):
 
         for i, a_img_name in enumerate(real_test_imgname_list):
 
-            raw_img = cv2.imread(a_img_name)
+            raw_img = cv2.imread(a_img_name)[:, :, ::-1]
             start = time.time()
             resized_img, detected_boxes, detected_scores, detected_categories = \
                 sess.run(
                     [img_batch, detection_boxes, detection_scores, detection_category],
-                    feed_dict={img_plac: raw_img}  
+                    feed_dict={img_plac: raw_img}
                 )
             end = time.time()
             # print("{} cost time : {} ".format(img_name, (end - start)))
@@ -120,9 +120,9 @@ def parse_args():
                         help='gpu id ',
                         default='0', type=str)
 
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
+   # if len(sys.argv) == 1:
+    #    parser.print_help()
+     #   sys.exit(1)
 
     args = parser.parse_args()
 

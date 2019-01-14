@@ -79,7 +79,7 @@ def only_draw_scores(draw_obj, box, score, color):
 
 def draw_label_with_scores(draw_obj, box, label, score, color):
     x, y = box[0], box[1]
-    draw_obj.rectangle(xy=[x, y, x + 60, y + 10],
+    draw_obj.rectangle(xy=[x, y, x + 80, y + 10],
                        fill=color)
 
     txt = LABEl_NAME_MAP[label] + ':' + str(round(score, 2))

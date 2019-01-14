@@ -98,10 +98,10 @@ ADD_BOX_IN_TENSORBOARD = True
 ROOT_PATH = os.path.abspath('../')
 print (20*"++--")
 print (ROOT_PATH)
-GPU_GROUP = "4"
+GPU_GROUP = "0"
 SHOW_TRAIN_INFO_INTE = 10
-SMRY_ITER = 100
-SAVE_WEIGHTS_INTE = 10000
+SMRY_ITER = 50
+SAVE_WEIGHTS_INTE = 1000
 
 SUMMARY_PATH = ROOT_PATH + '/output/summary'
 TEST_SAVE_PATH = ROOT_PATH + '/tools/test_result'
@@ -119,7 +119,7 @@ PRETRAINED_CKPT = ROOT_PATH + '/data/pretrained_weights/' + weights_name + '.ckp
 TRAINED_CKPT = os.path.join(ROOT_PATH, 'output/trained_weights')
 
 EVALUATE_DIR = ROOT_PATH + '/output/evaluate_result_pickle/'
-test_annotate_path = '/home/yjr/DataSet/VOC/VOC_test/VOC2007/Annotations'
+# test_annotate_path = '/home/yjr/DataSet/VOC/VOC_test/VOC2007/Annotations'
 
 # ------------------------------------------ Train config
 RESTORE_FROM_RPN = False
@@ -141,16 +141,16 @@ GRADIENT_CLIPPING_BY_NORM = None   # 10.0  if None, will not clip
 
 EPSILON = 1e-5
 MOMENTUM = 0.9
-LR = 0.001  # 0.001  # 0.0003
+LR = 0.0003  # 0.001  # 0.0003
 DECAY_STEP = [60000, 80000]  # 50000, 70000
-MAX_ITERATION = 150000
+MAX_ITERATION = 60000
 
 # -------------------------------------------- Data_preprocess_config
-DATASET_NAME = 'pascal'  # 'ship', 'spacenet', 'pascal', 'coco'
+DATASET_NAME = 'vehicle'  # 'ship', 'spacenet', 'pascal', 'coco'
 PIXEL_MEAN = [123.68, 116.779, 103.939]  # R, G, B. In tf, channel is RGB. In openCV, channel is BGR
 IMG_SHORT_SIDE_LEN = 600  # 600  # 600
 IMG_MAX_LENGTH = 1000  # 1000  # 1000
-CLASS_NUM = 20
+CLASS_NUM = 10
 
 # --------------------------------------------- Network_config
 BATCH_SIZE = 1

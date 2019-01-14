@@ -93,7 +93,7 @@ def convert_pascal_to_tfrecord():
         img_height, img_width, gtbox_label = read_xml_gtbox_and_label(xml)
 
         # img = np.array(Image.open(img_path))
-        img = cv2.imread(img_path)[:, :, ::-1]
+        img = cv2.imread(img_path,0)[:, :, ::-1]
 
         feature = tf.train.Features(feature={
             # do not need encode() in linux

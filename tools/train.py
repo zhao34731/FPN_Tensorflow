@@ -122,7 +122,7 @@ def train():
     restorer, restore_ckpt = faster_rcnn.get_restorer()
     saver = tf.train.Saver(max_to_keep=30)
 
-    config = tf.ConfigProto()
+    config = tf.ConfigProto(log_device_placement=True)
     config.gpu_options.allow_growth = True
 
     with tf.Session(config=config) as sess:

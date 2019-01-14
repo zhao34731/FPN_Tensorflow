@@ -75,6 +75,21 @@ elif cfgs.DATASET_NAME == 'pascal':
         'train': 19,
         'tvmonitor': 20
     }
+
+elif cfgs.DATASET_NAME == 'vehicle':
+    NAME_LABEL_MAP = {
+        'back_ground': 0,
+        'T62': 1,
+        'D7': 2,
+        'BMP2': 3,
+        'ZIL131': 4,
+        'BTR_60': 5,
+        'BTR70': 6,
+        'ZSU_23_4': 7,
+        '2S1': 8,
+        'BRDM_2': 9,
+        'T72': 10
+    }
 else:
     assert 'please set label dict!'
 
