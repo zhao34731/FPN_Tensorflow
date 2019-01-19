@@ -68,7 +68,7 @@ def export_frozenPB():
 
     tf.reset_default_graph()
 
-    dets = build_detection_graph()
+    boxes,scores,classes,numbers = build_detection_graph()
 
     saver = tf.train.Saver()
 
